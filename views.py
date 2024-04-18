@@ -37,6 +37,12 @@ def professional(request):
 def beginner_devices(request):
     beginner_devices = Equipment.objects.filter(level='beginner')
     return render(request, 'beginner.html', {'beginner_devices': beginner_devices})
+from django.shortcuts import render
+from .models import Equipment
+
+def equipment_list_view(request):
+    equipment_list = Equipment.objects.all()  # Query all equipment items
+    return render(request, 'equipmentlist.html', {'equipment_list': equipment_list})
 
 
 

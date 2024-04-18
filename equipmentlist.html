@@ -130,9 +130,9 @@
     <input type="checkbox" id="menuToggle">
     <div id="mySidenav" class="sidenav">
         <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
-        <a href="searchforeqiupment">Home</a>
+        <a href="#">Home</a>
         <a href="#">Reserve</a>
-        <a href="profile">Profile</a>
+        <a href="#">Profile</a>
     </div>
     <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
     <h1>Equipment List</h1>
@@ -147,19 +147,26 @@
             </tr>
         </thead>
         <tbody>
-            {% for equipment in equipment_list %}
+            <!-- Static data starts here -->
             <tr>
-                <td>{{ equipment.deviceid }}</td>
-                <td><a href="#" onclick="openModal('{{ equipment.audit }}', '{{ equipment.location }}', '{{ equipment.status }}', '{{ equipment.comments }}', '{{ equipment.level }}')">{{ equipment.deviceName }}</a></td>
-                <td>{{ equipment.deviceType }}</td>
-                <td>{{ equipment.quantity }}</td>
-                <td>{{ equipment.availability }}</td>
+                <td>1</td>
+                <td><a href="#" onclick="openModal('2022-05-20', 'Other', 'On_loan', '', '')">Laptop w/ 2070 GPU</a></td>
+                <td>PC/Laptop</td>
+                <td>1</td>
+                <td>Available</td>
             </tr>
-            {% endfor %}
+            <tr>
+                <td>2</td>
+                <td><a href="#" onclick="openModal('2023-03-24', 'XRLab Blue Cabinet', 'Repairing', '', '')">Laptop w/ 2070</a></td>
+                <td>PC/Laptop</td>
+                <td>3</td>
+                <td>Not Available</td>
+            </tr>
+            <!-- Add more rows for additional devices -->
         </tbody>
     </table>
     <div class="profile-icon">
-        <a href="{% url 'profile' %}">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
+        <a href="#">JH</a> <!-- Replace with your initials -->
     </div> 
     <div id="overlay"></div>
     <!-- The Modal -->

@@ -192,14 +192,6 @@
   <hr>
   <h3>Recommended for You</h3>
   <div class="button-container">
-    {% for device in recommended_devices %}
-    <div class="button">
-      <img src="{{ device.image.url }}" alt="{{ device.deviceName }}">
-      <p>{{ device.deviceName }}</p>
-      <p>{{ device.deviceType }}</p>
-      <!-- Add more device details as needed -->
-    </div>
-    {% endfor %}
   </div>
   <hr>
   <div class="notification-icon">

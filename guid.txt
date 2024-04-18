@@ -1,0 +1,10 @@
+conda create --name myenv
+
+conda activate myenv
+
+pip install django
+
+Inside the project directory
+
+python manage.py runserver
+ 

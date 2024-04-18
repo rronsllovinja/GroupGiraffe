@@ -5,7 +5,6 @@
 
   <title>Search for Equipment</title>
   <style>
-    /* Your existing CSS styles */
     .profile-icon {
       width: 50px;
       height: 50px;
@@ -20,7 +19,7 @@
       font-family: Arial, sans-serif;
       position: fixed;
       top: 10px;
-      right: 10px; /* Adjusted right position */
+      right: 10px; 
     }
     .notification-icon {
       width: 50px;
@@ -30,7 +29,7 @@
       align-items: center;
       position: fixed;
       top: 10px;
-      right: 70px; /* Adjusted right position */
+      right: 70px; 
     }
     .samerow {
       display: flex;
@@ -70,7 +69,7 @@
       margin-bottom: 5px;
     }
 
-    /* Override button styles for anchor tags */
+    
     .button-container a {
       text-decoration: none;
       color: inherit;
@@ -78,17 +77,17 @@
       padding: 10px;
       border: none;
       border-radius: 5px;
-      background-color: transparent; /* Remove background color */
+      background-color: transparent; 
       cursor: pointer;
     }
 
     .button-container a:hover {
-      background-color: #ccc; /* Change background color on hover if needed */
+      background-color: #ccc; 
     }
     
-    /* Toggle menu styles */
+    
     #menuToggle {
-      display: none; /* Hide the checkbox */
+      display: none; 
     }
     .sidenav {
       height: 100%;
@@ -125,10 +124,10 @@
 </head>
 <body>
 
-<!-- Checkbox to toggle sidebar -->
+
 <input type="checkbox" id="menuToggle">
 
-<!-- Side navigation menu -->
+
 <div id="mySidenav" class="sidenav">
   <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
   <!-- <a href="searchforeqiupment">Home</a> -->
@@ -138,10 +137,10 @@
   <a href="profile">Profile</a>
 </div>
 
-<!-- Open navigation button -->
+
 <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
 
-<!-- Main content -->
+
 <div id="main">
   <h1>Search for Equipment</h1>
   <form action="">
@@ -175,7 +174,7 @@
   <div class="samerow">
     <div>
       <h3>Rating</h3>
-      <!-- Add content below Rating if needed -->
+     
       <p>Content below Rating</p>
     </div>
     <div>
@@ -211,7 +210,7 @@
   </div> 
 </div>
 
-<!-- Overlay for black background -->
+
 <div id="overlay"></div>
 
 <script>

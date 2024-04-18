@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <title>View Rented Equipment</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 0;
+        background-color: #f4f7fa;
+      }
+      .bar-graph {
+        width: 700px; /* Increased width to accommodate the labels */
+        height: 250px;
+        padding: 20px;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        position: relative;
+        border-radius: 10px;
+        background-color: #f1f1f1;
+        z-index: 2;
+      }
+
+      .filler {
+        position: absolute;
+        bottom: 0;
+        width: 15px; /* Adjusted width for each bar */
+        background-color: #7ea7ea; /* Bar color */
+        border-radius: 15px;
+        transition: height 0.5s ease-in-out;
+        height: 230px;
+        z-index: -1;
+      }
+
+      .bar {
+        position: absolute;
+        bottom: 0;
+        width: 15px; /* Adjusted width for each bar */
+        background-color: #ccdbee; /* Bar color */
+        transition: height 0.5s ease-in-out;
+        border-radius: 15px;
+      }
+
+      .bar-label {
+        position: absolute;
+        bottom: -20px;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .y-axis-label {
+        position: absolute;
+        left: 5px; /* Adjusted position for the left side */
+        bottom: calc(50% - 150px); /* Center vertically */
+        font-size: 14px;
+        color: #333;
+        text-align: right; /* Align text to the right */
+      }
+      .dashboard {
+        max-width: auto;
+        background: #ffffff;
+        padding: 20px;
+        padding-left: 100px;
+        padding-right: 50px;
+        height: auto;
+      }
+      .nav {
+        max-width: auto;
+        margin: 0 auto;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 50px;
+      }
+      .dashboard-header {
+        margin-bottom: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .dashboard-header h1 {
+        font-size: 36px;
+        color: #333;
+        font-weight: 900;
+      }
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 20px;
+      }
+      .card {
+        background: #f1f1f1;
+        padding: 15px;
+        border-radius: 15px; /* Adjusted for more rounded corners */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        text-align: center; /* Centering text */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Distribute space */
+        margin-bottom: 20px;
+      }
+      .card-header {
+        font-size: 18px;
+        color: #555; /* Slightly darker text color */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .card-content {
+        font-size: 36px; /* Larger font size for the number */
+        color: #222; /* Even darker text color */
+        padding-bottom: 20px;
+      }
+      .card-content::after {
+        text-align: center; /* Centering text */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        z-index: 2;
+      }
+      button {
+        background-color: #7ea7ea; /* Bootstrap primary color */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px; /* Rounded edges for the button */
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px; /* Added space above the button */
+        transition: background-color 0.3s ease; /* Smooth background color change on hover */
+      }
+
+      button:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+      }
+      .bar-graph2 {
+        width: 700px; /* Increased width to accommodate the labels */
+        height: 250px;
+        padding: 20px;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        position: relative;
+        border-radius: 10px;
+        z-index: 2;
+        background-color: #f1f1f1;
+      }
+
+      .bar2 {
+        position: absolute;
+        bottom: 0;
+        width: 10px; /* Adjusted width for each bar */
+        background-color: #7ea7ea; /* Bar color */
+        transition: height 0.5s ease-in-out;
+        border-radius: 15px;
+      }
+      .bar-label2 {
+        position: absolute;
+        bottom: -20px;
+        font-size: 14px;
+        color: #333;
+      }
+      .y-axis-label2 {
+        position: absolute;
+        left: 5px; /* Adjusted position for the left side */
+        bottom: calc(50% - 150px); /* Center vertically */
+        font-size: 14px;
+        color: #333;
+        text-align: right; /* Align text to the right */
+      }
+      .months {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .month {
+        text-align: center;
+        width: 30%; /* Adjust as needed */
+      }
+
+      .month-name {
+        color: #333;
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      .bar-container {
+        background-color: #7ea7ea;
+        border-radius: 10px;
+        height: 20px;
+      }
+
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 10; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.5); /* Black w/ opacity */
+      }
+
+      /* Modal content */
+      .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+        border-radius: 10px;
+      }
+
+      /* Close button */
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      th,
+      td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f0f0f0;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+      form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        max-width: 400px;
+        margin: 30px auto;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="addEquipmentModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" onclick="closeAddEquipmentModal()">&times;</span>
+        <h1>Add New Equipment</h1>
+        <form method="post">
+          {% csrf_token %}
+          <label for="id_name">Name:</label>
+          <input type="text" id="id_name" name="name" required /><br /><br />
+
+          <label for="id_category">Category:</label>
+          <input
+            type="text"
+            id="id_category"
+            name="category"
+            required
+          /><br /><br />
+
+          <label for="id_quantity">Quantity:</label>
+          <input
+            type="number"
+            id="id_quantity"
+            name="quantity"
+            required
+          /><br /><br />
+
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="overdueEquipmentModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" onclick="closeOverdueEquipmentModal()"
+          >&times;</span
+        >
+        <h1>View Overdue Equipment</h1>
+
+        <table>
+          <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+          </tr>
+          <tr>
+            <td>Item 1A</td>
+            <td>Item 1B</td>
+            <td>Item 1C</td>
+          </tr>
+          <tr>
+            <td>Item 2A</td>
+            <td>Item 2B</td>
+            <td>Item 2C</td>
+          </tr>
+          <tr>
+            <td>Item 3A</td>
+            <td>Item 3B</td>
+            <td>Item 3C</td>
+          </tr>
+        </table>
+        <button onclick="closeOverdueEquipmentModal()">Close Modal</button>
+      </div>
+    </div>
+
+    <div id="usageModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" onclick="closeUsageModal()">&times;</span>
+        <h1>Usage</h1>
+        <!-- Content for the Usage modal -->
+        <table>
+          <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+          </tr>
+          <tr>
+            <td>Item 1A</td>
+            <td>Item 1B</td>
+            <td>Item 1C</td>
+          </tr>
+          <tr>
+            <td>Item 2A</td>
+            <td>Item 2B</td>
+            <td>Item 2C</td>
+          </tr>
+          <tr>
+            <td>Item 3A</td>
+            <td>Item 3B</td>
+            <td>Item 3C</td>
+          </tr>
+        </table>
+        <button onclick="closeUsageModal()">Close Modal</button>
+      </div>
+    </div>
+
+    <div id="visualsModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" onclick="closeVisualsModal()">&times;</span>
+        <h1>Visuals</h1>
+        <!-- Content for the Visuals modal -->
+        <table>
+          <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+          </tr>
+          <tr>
+            <td>Item 1A</td>
+            <td>Item 1B</td>
+            <td>Item 1C</td>
+          </tr>
+          <tr>
+            <td>Item 2A</td>
+            <td>Item 2B</td>
+            <td>Item 2C</td>
+          </tr>
+          <tr>
+            <td>Item 3A</td>
+            <td>Item 3B</td>
+            <td>Item 3C</td>
+          </tr>
+        </table>
+        <button onclick="closeVisualsModal()">Close Modal</button>
+      </div>
+    </div>
+
+    <div id="maintenanceModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" onclick="closeMaintenanceModal()">&times;</span>
+        <h1>Maintenance</h1>
+        <!-- Content for the Maintenance modal -->
+        <table>
+          <tr>
+            <th>Column 1</th>
+            <th>Column 2</th>
+            <th>Column 3</th>
+          </tr>
+          <tr>
+            <td>Item 1A</td>
+            <td>Item 1B</td>
+            <td>Item 1C</td>
+          </tr>
+          <tr>
+            <td>Item 2A</td>
+            <td>Item 2B</td>
+            <td>Item 2C</td>
+          </tr>
+          <tr>
+            <td>Item 3A</td>
+            <td>Item 3B</td>
+            <td>Item 3C</td>
+          </tr>
+        </table>
+        <button onclick="closeMaintenanceModal()">Close Modal</button>
+      </div>
+    </div>
+
+    <div id="rentModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" onclick="closeRentModal()">&times;</span>
+        <h1>Rent</h1>
+        <form method="post">
+          {% csrf_token %}
+          <label for="id_equipment">Equipment:</label>
+          <select id="id_equipment" name="equipment" required>
+            <option value="" selected disabled>Select equipment</option>
+            {% for equipment in available_equipment %}
+            <option value="{{ equipment.id }}">{{ equipment.name }}</option>
+            {% endfor %}</select
+          ><br /><br />
+          <label for="id_quantity">Quantity:</label>
+          <input
+            type="number"
+            id="id_quantity"
+            name="quantity"
+            min="1"
+            required
+          /><br /><br />
+
+          <label for="id_start_date">Start Date:</label>
+          <input
+            type="date"
+            id="id_start_date"
+            name="start_date"
+            required
+          /><br /><br />
+
+          <label for="id_end_date">End Date:</label>
+          <input
+            type="date"
+            id="id_end_date"
+            name="end_date"
+            required
+          /><br /><br />
+
+          <button type="submit">Rent</button>
+        </form>
+      </div>
+    </div>
+
+    <div style="display: flex">
+      <div class="nav">
+        <i class="fa-solid fa-user fa-2x"></i>
+        <i class="fa-solid fa-diagram-project"></i>
+        <i class="fa-solid fa-users-line"></i>
+        <i class="fa-solid fa-calendar"></i>
+      </div>
+      <div class="dashboard">
+        <div class="dashboard-header">
+          <h1>Inventory Report</h1>
+          <!-- Placeholder for profile icon -->
+          <img
+            src="https://randomuser.me/api/portraits/men/52.jpg"
+            alt="image"
+            class="img"
+            style="
+              border-radius: 999px;
+              border: 1px solid;
+              border-color: #555;
+              width: auto;
+              height: 80px;
+              object-fit: contain;
+            "
+          />
+        </div>
+        <div class="dashboard-grid">
+          <div style="display: grid; grid-template-columns: repeat(1, 3fr)">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                grid-gap: 20px;
+              "
+            >
+              <div class="card">
+                <div class="card-header">
+                  Total Equipment<i class="fa-solid fa-box"></i>
+                </div>
+                <div class="card-content">{{ total_equipment }}</div>
+                <button onclick="openAddEquipmentModal()">
+                  Add new equipment
+                </button>
+              </div>
+
+              <div class="card">
+                <div class="card-header">
+                  Overdue<i class="fa-solid fa-exclamation"></i>
+                </div>
+                <div class="card-content">14</div>
+                <button onclick="openOverdueEquipmentModal()">
+                  View Overdue Equipment
+                </button>
+              </div>
+            </div>
+
+            <div class="card" style="height: 300px">
+              <div class="card-header">Equipment Usage History</div>
+              <div class="card-content">
+                <div class="months">
+                  <div class="month">
+                    <div class="month-name">January</div>
+                  </div>
+                  <div class="month">
+                    <div class="month-name">February</div>
+                  </div>
+                  <div class="month">
+                    <div class="month-name">March</div>
+                  </div>
+                </div>
+                <div
+                  class="bar-container"
+                  style="margin: 10px 500px 30px 10px"
+                ></div>
+                <div
+                  class="bar-container"
+                  style="margin: 10px 350px 30px 100px"
+                ></div>
+                <div
+                  class="bar-container"
+                  style="margin: 10px 90px 30px 350px"
+                ></div>
+                <div
+                  class="bar-container"
+                  style="margin: 10px 0px 30px 500px"
+                ></div>
+              </div>
+            </div>
+
+            <div class="card" style="height: 210px">
+              <div class="card-header">
+                Equipment Categories
+                <button
+                  style="
+                    background-color: transparent;
+                    color: #000;
+                    font-size: 14px;
+                    margin-bottom: 10px;
+                  "
+                >
+                  View all<i
+                    style="margin-left: 10px"
+                    class="fa-solid fa-arrow-right"
+                  ></i>
+                </button>
+              </div>
+              <div class="card-content">
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    grid-gap: 20px;
+                  "
+                >
+                  <div
+                    class="card"
+                    style="
+                      background-color: #7ea7ea;
+                      font-size: 20px;
+                      color: #fff;
+                    "
+                    onclick="openUsageModal()"
+                  >
+                    <div
+                      class="card"
+                      style="
+                        background-color: #ccdbee;
+                        font-size: 40px;
+                        max-width: 50%;
+                        align-self: center;
+                        color: #000;
+                      "
+                    >
+                      <i class="fa-solid fa-chart-bar"></i>
+                    </div>
+                    Usage
+                  </div>
+                  <div
+                    class="card"
+                    style="
+                      background-color: #7ea7ea;
+                      font-size: 20px;
+                      color: #fff;
+                    "
+                    onclick="openVisualsModal()"
+                  >
+                    <div
+                      class="card"
+                      style="
+                        background-color: #ccdbee;
+                        font-size: 40px;
+                        max-width: 50%;
+                        align-self: center;
+                        color: #000;
+                      "
+                    >
+                      <i class="fa-solid fa-image"></i>
+                    </div>
+                    Visuals
+                  </div>
+                  <div
+                    class="card"
+                    style="
+                      background-color: #7ea7ea;
+                      font-size: 20px;
+                      color: #fff;
+                    "
+                    onclick="openMaintenanceModal()"
+                  >
+                    <div
+                      class="card"
+                      style="
+                        background-color: #ccdbee;
+                        font-size: 40px;
+                        max-width: 50%;
+                        align-self: center;
+                        color: #000;
+                      "
+                    >
+                      <i class="fa-solid fa-user-gear"></i>
+                    </div>
+                    Maintenance
+                  </div>
+                  <div
+                    class="card"
+                    style="
+                      background-color: #7ea7ea;
+                      font-size: 20px;
+                      color: #fff;
+                    "
+                    onclick="openRentModal()"
+                  >
+                    <div
+                      class="card"
+                      style="
+                        background-color: #ccdbee;
+                        font-size: 40px;
+                        max-width: 50%;
+                        align-self: center;
+                        color: #000;
+                      "
+                    >
+                      <i class="fa-solid fa-hammer"></i>
+                    </div>
+                    Rent
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(1, 2fr)">
+            <div class="card">
+              <div class="card-header">Equipment Categories</div>
+              <div class="card-content">
+                <div style="display: flex">
+                  <p style="font-size: 20px; margin-right: 30px">
+                    <strong> Availabile</strong>
+                  </p>
+                  <p
+                    style="
+                      background-color: #7ea7ea;
+                      color: #fff;
+                      font-size: 15px;
+                      width: 20%;
+                      border-radius: 50px;
+                      padding-top: 5px;
+                      padding-bottom: 5px;
+                      height: 15px;
+                      align-self: center;
+                    "
+                  >
+                    Check Availability
+                  </p>
+                </div>
+                <div class="bar-graph" id="barGraph">
+                  <!-- Main bars -->
+                  <div class="bar" style="left: 45px"></div>
+                  <!-- Monday -->
+                  <div class="bar" style="left: 145px"></div>
+                  <!-- Tuesday -->
+                  <div class="bar" style="left: 245px"></div>
+                  <!-- Wednesday -->
+                  <div class="bar" style="left: 342px"></div>
+                  <!-- Thursday -->
+                  <div class="bar" style="left: 440px"></div>
+                  <!-- Friday -->
+                  <div class="bar" style="left: 543px"></div>
+                  <!-- Saturday -->
+                  <div class="bar" style="left: 645px"></div>
+                  <!-- Sunday -->
+
+                  <!-- Main bars -->
+                  <div class="filler" style="left: 45px"></div>
+                  <!-- Monday -->
+                  <div class="filler" style="left: 145px"></div>
+                  <!-- Tuesday -->
+                  <div class="filler" style="left: 245px"></div>
+                  <!-- Wednesday -->
+                  <div class="filler" style="left: 342px"></div>
+                  <!-- Thursday -->
+                  <div class="filler" style="left: 440px"></div>
+                  <!-- Friday -->
+                  <div class="filler" style="left: 543px"></div>
+                  <!-- Saturday -->
+                  <div class="filler" style="left: 645px"></div>
+                  <!-- Sunday -->
+
+                  <!-- Labels -->
+                  <div class="bar-label" style="left: 40px">Mon</div>
+                  <div class="bar-label" style="left: 140px">Tue</div>
+                  <div class="bar-label" style="left: 238px">Wed</div>
+                  <div class="bar-label" style="left: 338px">Thu</div>
+                  <div class="bar-label" style="left: 440px">Fri</div>
+                  <div class="bar-label" style="left: 540px">Sat</div>
+                  <div class="bar-label" style="left: 640px">Sun</div>
+
+                  <!-- Y-axis labels -->
+                  <!-- Labels are added dynamically using JavaScript -->
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">Equipment Categories</div>
+              <div class="card-content">
+                <div style="display: flex">
+                  <p style="font-size: 20px; margin-right: 30px">
+                    <strong>Expires in 30 Days</strong>
+                  </p>
+                  <p
+                    style="
+                      background-color: #7ea7ea;
+                      color: #fff;
+                      font-size: 15px;
+                      width: 30%;
+                      border-radius: 50px;
+                      padding-top: 5px;
+                      padding-bottom: 5px;
+                      height: 15px;
+                      align-self: center;
+                    "
+                  >
+                    View Warranty Details
+                  </p>
+                </div>
+                <div class="bar-graph2" id="barGraph2">
+                  <!-- Main bars -->
+                  <div class="bar2" style="left: 48px"></div>
+                  <!-- Jan -->
+                  <div class="bar2" style="left: 103px"></div>
+                  <!-- Feb -->
+                  <div class="bar2" style="left: 158px"></div>
+                  <!-- Mar -->
+                  <div class="bar2" style="left: 213px"></div>
+                  <!-- Apr -->
+                  <div class="bar2" style="left: 268px"></div>
+                  <!-- May -->
+                  <div class="bar2" style="left: 323px"></div>
+                  <!-- Jun -->
+                  <div class="bar2" style="left: 378px"></div>
+                  <!-- Jul -->
+                  <div class="bar2" style="left: 433px"></div>
+                  <!-- Aug -->
+                  <div class="bar2" style="left: 488px"></div>
+                  <!-- Sep -->
+                  <div class="bar2" style="left: 543px"></div>
+                  <!-- Oct -->
+                  <div class="bar2" style="left: 598px"></div>
+                  <!-- Nov -->
+                  <div class="bar2" style="left: 653px"></div>
+                  <!-- Dec -->
+
+                  <!-- Labels -->
+                  <div class="bar-label2" style="left: 40px">Jan</div>
+                  <div class="bar-label2" style="left: 95px">Feb</div>
+                  <div class="bar-label2" style="left: 150px">Mar</div>
+                  <div class="bar-label2" style="left: 205px">Apr</div>
+                  <div class="bar-label2" style="left: 260px">May</div>
+                  <div class="bar-label2" style="left: 315px">Jun</div>
+                  <div class="bar-label2" style="left: 370px">Jul</div>
+                  <div class="bar-label2" style="left: 425px">Aug</div>
+                  <div class="bar-label2" style="left: 480px">Sep</div>
+                  <div class="bar-label2" style="left: 535px">Oct</div>
+                  <div class="bar-label2" style="left: 590px">Nov</div>
+                  <div class="bar-label2" style="left: 645px">Dec</div>
+
+                  <!-- Y-axis labels -->
+                  <!-- Labels are added dynamically using JavaScript -->
+                </div>
+              </div>
+            </div>
+            <!-- Additional cards and content can be added here following the grid pattern -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{ availability|json_script:"availabilityData" }}
+  </body>
+
+  <script>
+    // Sample data for the days of the week
+    const availabilityData = JSON.parse(
+      document.getElementById("availabilityData").textContent
+    );
+    console.log("🚀 ~ availabilityData:", availabilityData);
+    const data = availabilityData;
+
+    const monthData = {
+      jan: 200,
+      feb: 200,
+      mar: 300,
+      apr: 150,
+      may: 540,
+      jun: 50,
+      jul: 180,
+      aug: 300,
+      sep: 150,
+      oct: 540,
+      nov: 50,
+      dec: 180,
+    };
+
+    function openAddEquipmentModal() {
+      var modal = document.getElementById("addEquipmentModal");
+      modal.style.display = "block";
+    }
+
+    // Function to close the modal for adding new equipment
+    function closeAddEquipmentModal() {
+      var modal = document.getElementById("addEquipmentModal");
+      modal.style.display = "none";
+    }
+
+    // Function to open the modal for viewing overdue equipment
+    function openOverdueEquipmentModal() {
+      var modal = document.getElementById("overdueEquipmentModal");
+      modal.style.display = "block";
+    }
+
+    // Function to close the modal for viewing overdue equipment
+    function closeOverdueEquipmentModal() {
+      var modal = document.getElementById("overdueEquipmentModal");
+      modal.style.display = "none";
+    }
+
+    function openUsageModal() {
+      var modal = document.getElementById("usageModal");
+      modal.style.display = "block";
+    }
+
+    // Function to close the Usage modal
+    function closeUsageModal() {
+      var modal = document.getElementById("usageModal");
+      modal.style.display = "none";
+    }
+
+    // Function to open the Visuals modal
+    function openVisualsModal() {
+      var modal = document.getElementById("visualsModal");
+      modal.style.display = "block";
+    }
+
+    // Function to close the Visuals modal
+    function closeVisualsModal() {
+      var modal = document.getElementById("visualsModal");
+      modal.style.display = "none";
+    }
+
+    // Function to open the Maintenance modal
+    function openMaintenanceModal() {
+      var modal = document.getElementById("maintenanceModal");
+      modal.style.display = "block";
+    }
+
+    // Function to close the Maintenance modal
+    function closeMaintenanceModal() {
+      var modal = document.getElementById("maintenanceModal");
+      modal.style.display = "none";
+    }
+
+    // Function to open the Rent modal
+    function openRentModal() {
+      var modal = document.getElementById("rentModal");
+      modal.style.display = "block";
+    }
+
+    // Function to close the Rent modal
+    function closeRentModal() {
+      var modal = document.getElementById("rentModal");
+      modal.style.display = "none";
+    }
+
+    // Close the modal when clicking outside of it
+    window.onclick = function (event) {
+      var modals = document.querySelectorAll(".modal");
+      modals.forEach(function (modal) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      });
+    };
+    // Function to update the heights of the bars based on data
+    function updateGraph(data) {
+      const days = Object.keys(data);
+      const maxData = Math.max(...Object.values(data));
+      const yAxisLabels = document.querySelector(".bar-graph");
+
+      // Dynamically add y-axis labels based on the maximum data value
+      if (maxData > 100) {
+        for (let i = 0; i <= maxData; i += 50) {
+          const label = document.createElement("div");
+          label.classList.add("y-axis-label");
+          label.textContent = i;
+          label.style.bottom = `${(i / maxData) * 230}px`;
+          yAxisLabels.appendChild(label);
+        }
+      } else {
+        for (let i = 0; i <= maxData; i += 5) {
+          const label = document.createElement("div");
+          label.classList.add("y-axis-label");
+          label.textContent = i;
+          label.style.bottom = `${(i / maxData) * 230}px`;
+          yAxisLabels.appendChild(label);
+        }
+      }
+
+      days.forEach((day, index) => {
+        const bar = document.querySelector(`.bar:nth-child(${index + 1})`);
+        const barHeight = (data[day] / maxData) * 230; // Adjusted height for the bar
+        bar.style.height = `${barHeight}px`;
+      });
+    }
+
+    // Function to update the heights of the bars based on monthData
+    function updateGraphForMonth(monthData) {
+      const months = Object.keys(monthData);
+      const maxMonthData = Math.max(...Object.values(monthData));
+      const yAxisLabels = document.querySelector(".bar-graph2");
+
+      // Dynamically add y-axis labels based on the maximum monthData value
+      for (let i = 0; i <= maxMonthData; i += 50) {
+        const label = document.createElement("div");
+        label.classList.add("y-axis-label2");
+        label.textContent = i;
+        label.style.bottom = `${(i / maxMonthData) * 230}px`;
+        yAxisLabels.appendChild(label);
+      }
+
+      months.forEach((month, index) => {
+        const bar = document.querySelector(`.bar2:nth-child(${index + 1})`);
+        const barHeight = (monthData[month] / maxMonthData) * 230; // Adjusted height for the bar
+        bar.style.height = `${barHeight}px`;
+      });
+    }
+    // Initial update with sample data
+    updateGraph(data);
+    updateGraphForMonth(monthData);
+  </script>
+</html>

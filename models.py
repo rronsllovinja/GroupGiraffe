@@ -1,39 +1,13 @@
 from django.db import models
 
-# Create your models here.
 class Equipment(models.Model):
-    deviceid = models.IntegerField()
-    deviceName = models.CharField(max_length=100)
-    deviceType = models.CharField(max_length=100)
-    quantity = models.IntegerField()
-    audit = models.DateTimeField(auto_now=True)
-    location = models.CharField(max_length=100)
-    status = models.CharField(max_length=100, null=True,default=None)
-    comments = models.TextField(blank=True)
+    name = models.CharField(max_length=100)
+    category = models.CharField(max_length=50)
+    quantity = models.IntegerField(default=0)
 
-    level_choices = [
-        ('beginner', 'Beginner'),
-        ('intermediate', 'Intermediate'),
-        ('professional', 'Professional'),
-    ]
-    level = models.CharField(max_length=20, choices=level_choices, default='beginner')
+class Rental(models.Model):
+    equipment = models.ForeignKey(Equipment, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)  # Default to 1 if not specified
+    start_date = models.DateField()
+    end_date = models.DateField()
 
-    level_categories = [
-        ('technology', 'Technology'),
-        ('gaming', 'Gaming'),
-        ('office', 'Office'),
-        ('other', 'Other'),
-        
-    ]
-    categories = models.CharField(max_length=20, choices=level_categories, default='technology')
-
-    level_availability = [
-    ('available', 'Available'),
-    ('unavailable', 'Unavailable'),
-    ]
-
-    availability = models.CharField(max_length=20, choices=level_availability, default='available')
-
-
-    def __str__(self):
-        return self.deviceName

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Equipment List</title>
+    <style>
+        /* Your existing CSS styles */
+        .profile-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            color: #fff;
+            text-transform: uppercase;
+            font-family: Arial, sans-serif;
+            position: fixed;
+            top: 10px;
+            right: 10px;
+        }
+        .box {
+            background-color: lightgrey;
+            width: 800px;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 20px; /* Curved corners */
+        }
+        .box h2 {
+            margin-top: 0; /* Remove default margin from h2 */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: lightgrey;
+        }
+        .button {
+            background-color: black;
+            margin-right: 10px;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+        }
+        .button-container {
+            margin-top: 10px;
+        }
+        #menuToggle {
+            display: none; /* Hide the checkbox */
+        }
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        .sidenav a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+        .closebtn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: #818181;
+            cursor: pointer;
+        }
+
+        /* Style for modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; /* 5% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* Close button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="menuToggle">
+    <div id="mySidenav" class="sidenav">
+        <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
+        <a href="searchforeqiupment">Home</a>
+        <a href="#">Reserve</a>
+        <a href="profile">Profile</a>
+    </div>
+    <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
+    <h1>Equipment List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Device ID</th>
+                <th>Device Name</th>
+                <th>Device Type</th>
+                <th>Quantity</th>
+                <th>Availability</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipment in equipment_list %}
+            <tr>
+                <td>{{ equipment.deviceid }}</td>
+                <td><a href="#" onclick="openModal('{{ equipment.audit }}', '{{ equipment.location }}', '{{ equipment.status }}', '{{ equipment.comments }}', '{{ equipment.level }}')">{{ equipment.deviceName }}</a></td>
+                <td>{{ equipment.deviceType }}</td>
+                <td>{{ equipment.quantity }}</td>
+                <td>{{ equipment.availability }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="profile-icon">
+        <a href="{% url 'profile' %}">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
+    </div> 
+    <div id="overlay"></div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p id="auditText"></p>
+            <p id="locationText"></p>
+            <p id="statusText"></p>
+            <p id="commentText"></p>
+            <p id="levelText"></p>
+        </div>
+    </div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function openModal(audit, location, status, comment, level) {
+            var modal = document.getElementById("myModal");
+            var auditText = document.getElementById("auditText");
+            var locationText = document.getElementById("locationText");
+            var statusText = document.getElementById("statusText");
+            var commentText = document.getElementById("commentText");
+            var levelText = document.getElementById("levelText");
+            auditText.textContent = "Audit Date: " + audit;
+            locationText.textContent = "Location: " + location;
+            statusText.textContent = "Status: " + status;
+            commentText.textContent = "Comment: " + comment;
+            levelText.textContent = "Level: " + level;
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+    </script>        
+</body>
+</html>

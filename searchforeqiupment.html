@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <title>Search for Equipment</title>
+  <style>
+    /* Your existing CSS styles */
+    .profile-icon {
+      width: 50px;
+      height: 50px;
+      background-color: #ccc;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      color: #fff;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      position: fixed;
+      top: 10px;
+      right: 10px; /* Adjusted right position */
+    }
+    .notification-icon {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 10px;
+      right: 70px; /* Adjusted right position */
+    }
+    .samerow {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .samerow > div {
+      flex: 1;
+      position: relative;
+    }
+    .samerow > div:first-child {
+      margin-right: 10px;
+    }
+    .samerow > div:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: -5px;
+      border-right: 1px solid #ccc;
+    }
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+    }
+    .button {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+    }
+    .button img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 5px;
+    }
+
+    /* Override button styles for anchor tags */
+    .button-container a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: transparent; /* Remove background color */
+      cursor: pointer;
+    }
+
+    .button-container a:hover {
+      background-color: #ccc; /* Change background color on hover if needed */
+    }
+    
+    /* Toggle menu styles */
+    #menuToggle {
+      display: none; /* Hide the checkbox */
+    }
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+    .sidenav a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+    .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 30px;
+      color: #818181;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Checkbox to toggle sidebar -->
+<input type="checkbox" id="menuToggle">
+
+<!-- Side navigation menu -->
+<div id="mySidenav" class="sidenav">
+  <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
+  <!-- <a href="searchforeqiupment">Home</a> -->
+  <a href="eqiupmentlist">Equipment List</a>
+  <a href="#">Reserve</a>
+  
+  <a href="profile">Profile</a>
+</div>
+
+<!-- Open navigation button -->
+<label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
+
+<!-- Main content -->
+<div id="main">
+  <h1>Search for Equipment</h1>
+  <form action="">
+    <input type="search" id="esearch" name="esearch">
+    <input type="submit">
+  </form>
+  <hr>
+  
+  <h3>Top Searches</h3>
+  <button type="button">Reserve</button>
+  <!-- <button type="button">Check out</button> -->
+  <button type="button">Approve</button>
+  <button type="button">Reject</button>
+  <!-- <button type="button">CW/FYP</button> -->
+  <div class="button-container">
+    <a href="{% url 'admin:index' %}">Admin User</a>
+  </div>
+  <hr>
+  
+  <h3>Categories</h3>
+  <form class="" action="index.html" method="post">
+    <ul>
+      <li>Gaming</li>
+      <li>Technology</li>
+      <li>Office</li>
+      <li>Other</li>
+    </ul>
+  </form>
+  <hr>
+  
+  <div class="samerow">
+    <div>
+      <h3>Rating</h3>
+      <!-- Add content below Rating if needed -->
+      <p>Content below Rating</p>
+    </div>
+    <div>
+      <div>
+  <h3>Level</h3>
+  <ul>
+    <li><a href="beginner">Beginner</a></li>
+    <li><a href="intermediate">Intermediate</a></li>
+    <li><a href="professional">Professional</a></li>
+  </ul>
+</div>
+    </div>
+  </div>
+  
+  <hr>
+  <h3>Recommended for You</h3>
+  <div class="button-container">
+    {% for device in recommended_devices %}
+    <div class="button">
+      <img src="{{ device.image.url }}" alt="{{ device.deviceName }}">
+      <p>{{ device.deviceName }}</p>
+      <p>{{ device.deviceType }}</p>
+      <!-- Add more device details as needed -->
+    </div>
+    {% endfor %}
+  </div>
+  <hr>
+  <div class="notification-icon">
+    <i class="fas fa-bell"></i>
+  </div>
+  <div class="profile-icon">
+    <a href="{% url 'profile' %}">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
+  </div> 
+</div>
+
+<!-- Overlay for black background -->
+<div id="overlay"></div>
+
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("overlay").style.display = "block";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("overlay").style.display = "none";
+}
+</script>
+
+</body>
+</html>

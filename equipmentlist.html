@@ -25,9 +25,11 @@
             width: 800px;
             padding: 20px;
             margin: 20px;
-            border-radius: 20px; 
+            border-radius: 20px; /* Curved corners */
+        }
         .box h2 {
-            margin-top: 0; 
+            margin-top: 0; /* Remove default margin from h2 */
+        }
         table {
             width: 100%;
             border-collapse: collapse;
@@ -51,7 +53,7 @@
             margin-top: 10px;
         }
         #menuToggle {
-            display: none; 
+            display: none; /* Hide the checkbox */
         }
         .sidenav {
             height: 100%;
@@ -83,6 +85,26 @@
             font-size: 30px;
             color: #818181;
             cursor: pointer;
+        }
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
         }
         .close {
             color: #aaa;
@@ -999,6 +1021,49 @@
     <div class="profile-icon">
         <a href="#">LT</a> <!-- Replace with your initials -->
     </div> 
+    <div id="overlay"></div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p id="auditText"></p>
+            <p id="locationText"></p>
+            <p id="statusText"></p>
+            <p id="commentText"></p>
+            <p id="levelText"></p>
+        </div>
+    </div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        function openModal(audit, location, status, comment, level) {
+            var modal = document.getElementById("myModal");
+            var auditText = document.getElementById("auditText");
+            var locationText = document.getElementById("locationText");
+            var statusText = document.getElementById("statusText");
+            var commentText = document.getElementById("commentText");
+            var levelText = document.getElementById("levelText");
+            auditText.textContent = "Audit Date: " + audit;
+            locationText.textContent = "Location: " + location;
+            statusText.textContent = "Status: " + status;
+            commentText.textContent = "Comment: " + comment;
+            levelText.textContent = "Level: " + level;
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
     </script>        
 </body>
 </html>

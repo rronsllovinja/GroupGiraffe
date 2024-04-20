@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Equipment List</title>
     <style>
-        /* Your existing CSS styles */
         .profile-icon {
             width: 50px;
             height: 50px;
@@ -26,10 +25,10 @@
             width: 800px;
             padding: 20px;
             margin: 20px;
-            border-radius: 20px; /* Curved corners */
+            border-radius: 20px; 
         }
         .box h2 {
-            margin-top: 0; /* Remove default margin from h2 */
+            margin-top: 0; 
         }
         table {
             width: 100%;
@@ -54,7 +53,7 @@
             margin-top: 10px;
         }
         #menuToggle {
-            display: none; /* Hide the checkbox */
+            display: none; 
         }
         .sidenav {
             height: 100%;
@@ -87,30 +86,26 @@
             color: #818181;
             cursor: pointer;
         }
-
-        /* Style for modal */
         .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
+            display: none;
+            position: fixed; 
+            z-index: 1; 
             left: 0;
             top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.4); 
             padding-top: 60px;
         }
 
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto; /* 5% from the top and centered */
+            margin: 5% auto; 
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
+            width: 80%;
         }
-
-        /* Close button */
         .close {
             color: #aaa;
             float: right;
@@ -130,9 +125,9 @@
     <input type="checkbox" id="menuToggle">
     <div id="mySidenav" class="sidenav">
         <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
-        <a href="#">Home</a>
+        <a href="searchforeqiupment">Home</a>
         <a href="#">Reserve</a>
-        <a href="#">Profile</a>
+        <a href="profile">Profile</a>
     </div>
     <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
     <h1>Equipment List</h1>

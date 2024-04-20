@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Equipment List</title>
     <style>
-        /* Your existing CSS styles */
         .profile-icon {
             width: 50px;
             height: 50px;
@@ -26,11 +25,9 @@
             width: 800px;
             padding: 20px;
             margin: 20px;
-            border-radius: 20px; /* Curved corners */
-        }
+            border-radius: 20px; 
         .box h2 {
-            margin-top: 0; /* Remove default margin from h2 */
-        }
+            margin-top: 0; 
         table {
             width: 100%;
             border-collapse: collapse;
@@ -54,7 +51,7 @@
             margin-top: 10px;
         }
         #menuToggle {
-            display: none; /* Hide the checkbox */
+            display: none; 
         }
         .sidenav {
             height: 100%;
@@ -87,30 +84,6 @@
             color: #818181;
             cursor: pointer;
         }
-
-        /* Style for modal */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            padding-top: 60px;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: 5% auto; /* 5% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-        }
-
-        /* Close button */
         .close {
             color: #aaa;
             float: right;
@@ -134,18 +107,6 @@
         <a href="#">Reserve</a>
         <a href="#">Profile</a>
     </div>
-    <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
-     <div class="filter-container">
-        <input type="text" id="deviceNameFilter" class="filter-input" placeholder="Filter by Device Name">
-        <input type="text" id="deviceTypeFilter" class="filter-input" placeholder="Filter by Device Type">
-        <select id="availabilityFilter" class="filter-input">
-            <option value="">Filter by Availability</option>
-            <option value="Available">Available</option>
-            <option value="Unavailable">Unavailable</option>
-        </select>
-        <button onclick="applyFilters()">Apply Filters</button>
-        <button onclick="resetFilters()">Reset Filters</button>
-     </div>
     <h1>Equipment List</h1>
     <table>
         <thead>
@@ -1038,84 +999,6 @@
     <div class="profile-icon">
         <a href="#">LT</a> <!-- Replace with your initials -->
     </div> 
-    <div id="overlay"></div>
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <p id="auditText"></p>
-            <p id="locationText"></p>
-            <p id="statusText"></p>
-            <p id="commentText"></p>
-            <p id="levelText"></p>
-        </div>
-    </div>
-    <script>
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-            document.getElementById("overlay").style.display = "block";
-        }
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("overlay").style.display = "none";
-        }
-
-        function openModal(audit, location, status, comment, level) {
-            var modal = document.getElementById("myModal");
-            var auditText = document.getElementById("auditText");
-            var locationText = document.getElementById("locationText");
-            var statusText = document.getElementById("statusText");
-            var commentText = document.getElementById("commentText");
-            var levelText = document.getElementById("levelText");
-            auditText.textContent = "Audit Date: " + audit;
-            locationText.textContent = "Location: " + location;
-            statusText.textContent = "Status: " + status;
-            commentText.textContent = "Comment: " + comment;
-            levelText.textContent = "Level: " + level;
-            modal.style.display = "block";
-        }
-
-        function closeModal() {
-            var modal = document.getElementById("myModal");
-            modal.style.display = "none";
-        }
-        function applyFilters() {
-            var deviceNameFilter = document.getElementById("deviceNameFilter").value.toUpperCase();
-            var deviceTypeFilter = document.getElementById("deviceTypeFilter").value.toUpperCase();
-            var availabilityFilter = document.getElementById("availabilityFilter").value.toUpperCase();
-            var table = document.getElementById("equipmentTable");
-            var rows = table.getElementsByTagName("tr");
-
-            for (var i = 1; i < rows.length; i++) {
-                var deviceName = rows[i].getElementsByTagName("td")[1];
-                var deviceType = rows[i].getElementsByTagName("td")[2];
-                var availability = rows[i].getElementsByTagName("td")[8];
-
-                if (deviceName && deviceType && availability) {
-                    var deviceNameText = deviceName.textContent || deviceName.innerText;
-                    var deviceTypeText = deviceType.textContent || deviceType.innerText;
-                    var availabilityText = availability.textContent || availability.innerText;
-
-                    if (deviceNameText.toUpperCase().indexOf(deviceNameFilter) > -1 &&
-                        deviceTypeText.toUpperCase().indexOf(deviceTypeFilter) > -1 &&
-                        (availabilityFilter === "" || availabilityText.toUpperCase() === availabilityFilter)) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
-                    }
-                }
-            }
-        }
-
-        // Function to reset filters
-        function resetFilters() {
-            document.getElementById("deviceNameFilter").value = "";
-            document.getElementById("deviceTypeFilter").value = "";
-            document.getElementById("availabilityFilter").value = "";
-            applyFilters();
-        }
     </script>        
 </body>
 </html>

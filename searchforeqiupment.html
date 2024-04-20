@@ -183,7 +183,7 @@
 <div id="mySidenav" class="sidenav">
   <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
   <!-- <a href="searchforeqiupment">Home</a> -->
-  <a href="equipmentlist.html">Equipment List</a>
+  <a href="eqiupmentlist">Equipment List</a>
   <a href="#">Reserve</a>
   
   <a href="profile">Profile</a>
@@ -254,13 +254,19 @@
         <p>Valve Index</p>
     </div>
 </div>
-<div id="device-info"></div>
+<div id="device-info" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div id="device-info-content"></div>
+  </div>
+</div>
   <hr>
   <div class="notification-icon">
     <i class="fas fa-bell"></i>
   </div>
   <div class="profile-icon">
-    <a href="{% profile.html %}">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
+    <a href="profile.html">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
   </div> 
 </div>
 
@@ -319,7 +325,7 @@ function showDeviceInfo(deviceId) {
     const device = deviceInfo[deviceId];
     
     // Display device information
-    const deviceInfoDiv = document.getElementById("device-info");
+    const deviceInfoDiv = document.getElementById("device-info-content");
     deviceInfoDiv.innerHTML = `
         <h4>Device Information</h4>
         <p><strong>Device Name:</strong> ${device.deviceName}</p>
@@ -332,16 +338,13 @@ function showDeviceInfo(deviceId) {
         <p><strong>Availability:</strong> ${device.availability}</p>
     `;
     
-    const modal = document.getElementById("myModal");
-    if (modal.style.display === "block") {
-        modal.style.display = "none";
-    } else {
-        modal.style.display = "block";
-    }
+    const modal = document.getElementById("device-info");
+    modal.style.display = "block";
 }
 
 function closeModal() {
-    document.getElementById("myModal").style.display = "none";
+    const modal = document.getElementById("device-info");
+    modal.style.display = "none";
 }
 </script>
 

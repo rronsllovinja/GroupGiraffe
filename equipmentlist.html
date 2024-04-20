@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Equipment List</title>
     <style>
+        /* Your existing CSS styles */
         .profile-icon {
             width: 50px;
             height: 50px;
@@ -25,10 +26,10 @@
             width: 800px;
             padding: 20px;
             margin: 20px;
-            border-radius: 20px; 
+            border-radius: 20px; /* Curved corners */
         }
         .box h2 {
-            margin-top: 0; 
+            margin-top: 0; /* Remove default margin from h2 */
         }
         table {
             width: 100%;
@@ -53,7 +54,7 @@
             margin-top: 10px;
         }
         #menuToggle {
-            display: none; 
+            display: none; /* Hide the checkbox */
         }
         .sidenav {
             height: 100%;
@@ -86,31 +87,37 @@
             color: #818181;
             cursor: pointer;
         }
+
+        /* Style for modal */
         .modal {
-            display: none; 
-            position: fixed;
-            z-index: 1;
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
             left: 0;
             top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
             padding-top: 60px;
         }
+
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto;
+            margin: 5% auto; /* 5% from the top and centered */
             padding: 20px;
             border: 1px solid #888;
-            width: 80%; 
+            width: 80%; /* Could be more or less, depending on screen size */
         }
+
+        /* Close button */
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
+
         .close:hover,
         .close:focus {
             color: black;
@@ -127,6 +134,7 @@
         <a href="#">Reserve</a>
         <a href="#">Profile</a>
     </div>
+    <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
     <h1>Equipment List</h1>
     <table>
         <thead>
@@ -1032,7 +1040,7 @@
             <p id="levelText"></p>
         </div>
     </div>
-   <script>
+    <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
             document.getElementById("overlay").style.display = "block";
@@ -1057,10 +1065,11 @@
             levelText.textContent = "Level: " + level;
             modal.style.display = "block";
         }
+
         function closeModal() {
             var modal = document.getElementById("myModal");
             modal.style.display = "none";
         }
-    </script>           
+    </script>        
 </body>
 </html>

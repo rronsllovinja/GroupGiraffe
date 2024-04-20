@@ -134,43 +134,6 @@
       border: 1px solid #ccc;
       padding: 10px;
     }
-
-    /* Modal styles */
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed; /* Stay in place */
-      z-index: 1; /* Sit on top */
-      left: 0;
-      top: 0;
-      width: 100%; /* Full width */
-      height: 100%; /* Full height */
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    }
-
-    /* Modal content */
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto; /* 15% from the top and centered */
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%; /* Could be more or less, depending on screen size */
-    }
-
-    /* Close button */
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
   </style>
 </head>
 <body>
@@ -266,14 +229,6 @@
 
 <div id="overlay"></div>
 
-<!-- Modal -->
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <div id="device-info"></div>
-  </div>
-</div>
-
 <script>
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
@@ -286,6 +241,9 @@ function closeNav() {
 }
 
 function showDeviceInfo(deviceId) {
+    // This function will be triggered when the user clicks on a device box
+    // You can fetch device information based on the deviceId from your backend (e.g., Django view or API)
+    // For demonstration, I'm just displaying static information here
     
     const deviceInfo = {
         1: {
@@ -325,6 +283,7 @@ function showDeviceInfo(deviceId) {
     
     const device = deviceInfo[deviceId];
     
+    // Display device information
     const deviceInfoDiv = document.getElementById("device-info");
     deviceInfoDiv.innerHTML = `
         <h4>Device Information</h4>
@@ -337,6 +296,7 @@ function showDeviceInfo(deviceId) {
         <p><strong>Comment:</strong> ${device.comment}</p>
         <p><strong>Availability:</strong> ${device.availability}</p>
     `;
+}
 </script>
 
 </body>

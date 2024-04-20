@@ -135,6 +135,17 @@
         <a href="#">Profile</a>
     </div>
     <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
+     <div class="filter-container">
+        <input type="text" id="deviceNameFilter" class="filter-input" placeholder="Filter by Device Name">
+        <input type="text" id="deviceTypeFilter" class="filter-input" placeholder="Filter by Device Type">
+        <select id="availabilityFilter" class="filter-input">
+            <option value="">Filter by Availability</option>
+            <option value="Available">Available</option>
+            <option value="Unavailable">Unavailable</option>
+        </select>
+        <button onclick="applyFilters()">Apply Filters</button>
+        <button onclick="resetFilters()">Reset Filters</button>
+     </div>
     <h1>Equipment List</h1>
     <table>
         <thead>
@@ -1069,6 +1080,41 @@
         function closeModal() {
             var modal = document.getElementById("myModal");
             modal.style.display = "none";
+        }
+        function applyFilters() {
+            var deviceNameFilter = document.getElementById("deviceNameFilter").value.toUpperCase();
+            var deviceTypeFilter = document.getElementById("deviceTypeFilter").value.toUpperCase();
+            var availabilityFilter = document.getElementById("availabilityFilter").value.toUpperCase();
+            var table = document.getElementById("equipmentTable");
+            var rows = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < rows.length; i++) {
+                var deviceName = rows[i].getElementsByTagName("td")[1];
+                var deviceType = rows[i].getElementsByTagName("td")[2];
+                var availability = rows[i].getElementsByTagName("td")[8];
+
+                if (deviceName && deviceType && availability) {
+                    var deviceNameText = deviceName.textContent || deviceName.innerText;
+                    var deviceTypeText = deviceType.textContent || deviceType.innerText;
+                    var availabilityText = availability.textContent || availability.innerText;
+
+                    if (deviceNameText.toUpperCase().indexOf(deviceNameFilter) > -1 &&
+                        deviceTypeText.toUpperCase().indexOf(deviceTypeFilter) > -1 &&
+                        (availabilityFilter === "" || availabilityText.toUpperCase() === availabilityFilter)) {
+                        rows[i].style.display = "";
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // Function to reset filters
+        function resetFilters() {
+            document.getElementById("deviceNameFilter").value = "";
+            document.getElementById("deviceTypeFilter").value = "";
+            document.getElementById("availabilityFilter").value = "";
+            applyFilters();
         }
     </script>        
 </body>

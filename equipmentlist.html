@@ -25,10 +25,10 @@
             width: 800px;
             padding: 20px;
             margin: 20px;
-            border-radius: 20px; /* Curved corners */
+            border-radius: 20px; 
         }
         .box h2 {
-            margin-top: 0; /* Remove default margin from h2 */
+            margin-top: 0; 
         }
         table {
             width: 100%;
@@ -53,7 +53,7 @@
             margin-top: 10px;
         }
         #menuToggle {
-            display: none; /* Hide the checkbox */
+            display: none; 
         }
         .sidenav {
             height: 100%;
@@ -94,14 +94,13 @@
             top: 0;
             width: 100%; 
             height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.4); 
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
             padding-top: 60px;
         }
-
         .modal-content {
             background-color: #fefefe;
-            margin: 5% auto; 
+            margin: 5% auto;
             padding: 20px;
             border: 1px solid #888;
             width: 80%; 
@@ -112,7 +111,6 @@
             font-size: 28px;
             font-weight: bold;
         }
-
         .close:hover,
         .close:focus {
             color: black;
@@ -1034,7 +1032,7 @@
             <p id="levelText"></p>
         </div>
     </div>
-    <script>
+   <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
             document.getElementById("overlay").style.display = "block";
@@ -1059,11 +1057,10 @@
             levelText.textContent = "Level: " + level;
             modal.style.display = "block";
         }
-
         function closeModal() {
             var modal = document.getElementById("myModal");
             modal.style.display = "none";
         }
-    </script>        
+    </script>           
 </body>
 </html>

@@ -126,8 +126,7 @@
         <a href="searchforeqiupment">Home</a>
         <a href="reservationpage">Reserve</a>
         <a href="profile">Profile</a>
-        <a href="view_rented_equipment.html">Inventory Report</a>
-        
+        <a href="view_rented_equipment.html">Rented</a>
     </div>
     <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
     <h1>Equipment List</h1>
@@ -150,8 +149,7 @@
     <option value="Tripod">Tripod</option>
     <option value="Camera/Sensors">Camera/Sensors</option>
 </select>
-<button> Add New  Equipment </button>
-<!-- End of Filter Dropdowns -->
+<button onclick="openAddModal()">Add New Equipment</button>
 <table>
     <thead>
         <tr>
@@ -174,6 +172,37 @@
         {% endfor %}
     </tbody>
 </table>
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAddModal()">&times;</span>
+        <h2>Add New Equipment</h2>
+        <form id="addForm" action="{% url 'add_equipment' %}" method="post">
+            <label for="deviceId">Device ID:</label>
+            <input type="text" id="deviceId" name="deviceId" required><br>
+            <label for="deviceName">Device Name:</label>
+            <input type="text" id="deviceName" name="deviceName" required><br>
+            <label for="deviceType">Device Type:</label>
+            <input type="text" id="deviceType" name="deviceType" required><br>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" required><br>
+            <label for="availability">Availability:</label>
+            <select id="availability" name="availability" required>
+                <option value="available">Available</option>
+                <option value="unavailable">Unavailable</option>
+            </select><br>
+            <label for="auditDate">Audit Date:</label>
+            <input type="date" id="auditDate" name="auditDate"><br>
+            <label for="location">Location:</label>
+            <input id="location" name="location"></input><br>
+            <label for="status">Status:</label>
+            <input type="text" id="status" name="status"><br>
+            <label for="comments">Comments:</label>
+            <textarea id="comments" name="comments"></textarea><br>
+            <button type="submit">Add Equipment</button>
+        </form>
+    </div>
+</div>
+
 
 <!-- Modal -->
 <div id="myModal" class="modal">
@@ -236,9 +265,67 @@
         });
     }
 
-    // Event Listeners for Filter Dropdowns
     document.getElementById("availability-filter").addEventListener("change", filterEquipment);
     document.getElementById("type-filter").addEventListener("change", filterEquipment);
+
+    // Add New Equipment
+    function openAddModal() {
+            document.getElementById("addModal").style.display = "block";
+        }
+
+        function closeAddModal() {
+            document.getElementById("addModal").style.display = "none";
+        }
+
+        document.getElementById("addForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    // Retrieve form data
+    const deviceId = document.getElementById("deviceId").value;
+    const deviceName = document.getElementById("deviceName").value;
+    const deviceType = document.getElementById("deviceType").value;
+    const quantity = document.getElementById("quantity").value;
+    const availability = document.getElementById("availability").value;
+    const auditDate = document.getElementById("auditDate").value;
+    const status = document.getElementById("status").value;
+    const comments = document.getElementById("comments").value;
+    const location = document.getElementById("location").value;
+    // Perform validation if necessary
+    if (deviceId.trim() === "" || deviceName.trim() === "" || deviceType.trim() === "" || quantity.trim() === ""||auditDate.trim() === ""||location.trim() === "") {
+        alert("Please fill out all fields.");
+        return;
+    }
+    if (isNaN(quantity) || quantity <= 0) {
+        alert("Quantity must be a positive number.");
+        return;
+    }
+    // Add new equipment to the table
+    const newRow = document.createElement("tr");
+    newRow.className = "equipment-row";
+    newRow.innerHTML = `
+        <td>${deviceId}</td>
+        <td><a href="#" onclick="openModal('${auditDate}', '${location}', '${status}', '${comments}')">${deviceName}</a></td>
+        <td>${deviceType}</td>
+        <td>${quantity}</td>
+        <td>${availability}</td>
+    `;
+    // Append the new row to the table body
+    const equipmentList = document.getElementById("equipment-list");
+    equipmentList.appendChild(newRow);
+    document.getElementById("addForm").reset();
+    // Close the modal after adding new equipment
+    closeAddModal();
+});
+        // Edit Equipment
+        function editEquipment(deviceId) {
+            // Populate form with equipment details for editing
+        }
+
+        // Delete Equipment
+        function deleteEquipment(deviceId) {
+            // Prompt for confirmation
+            // If confirmed, remove equipment from the list
+        }
+    </script>
 </script>    
 </body>
 </html>

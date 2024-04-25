@@ -30,6 +30,12 @@
             <input type="text" name="item_id" placeholder="Enter Item ID">
             <button type="submit">Search</button>
         </form>
+        <h1>Items from Database</h1>
+        <ul>
+            {% for item in items %}
+            <li>{{ item.id }} - {{ item.name }} - {{ item.description }}</li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 

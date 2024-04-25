@@ -10,3 +10,8 @@ def search_results(request):
         return render(request, 'search_results.html', context)
     else:
         return render(request, 'search_results.html')
+
+def display_items(request):
+    items = YourModelName.objects.all()
+    context = {'items': items}
+    return render(request, 'display_items.html', context)

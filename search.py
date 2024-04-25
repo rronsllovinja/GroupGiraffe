@@ -1,16 +1,12 @@
-from django.db.models import Q
+from django.shortcuts import render
+from .models import models.py
 
-def home(request):
-    
-    
-    itemtypes = ItemType.objects.all()
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    item = Item.objects.filter
-    (Q(itemtype__type__icontains=q)) | 
-    (Q(name__icontains=q)) | 
-    (Q(itemmaker__maker_icontains=q)) | 
-    (Q(ram_icontains=q))
-
-    
-
-    context = {'item':item, 'itemtypes':itemtypes}
+def search_results(request):
+    if 'item_id' in request.GET:
+        item_id = request.GET['item_id']
+        # Perform a query to find the item by ID, assuming YourModelName has a field named 'id'
+        items = YourModelName.objects.filter(id=item_id)
+        context = {'items': items}
+        return render(request, 'search_results.html', context)
+    else:
+        return render(request, 'search_results.html')

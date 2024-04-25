@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import models.py
+from .models import Equipment
 
 def search_results(request):
     if 'item_id' in request.GET:

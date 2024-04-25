@@ -5,6 +5,10 @@ from django.db.models import Sum, F
 from datetime import date, timedelta
 from django.db.models import Count
 from django.db.models.functions import Coalesce
+from .models import Equipment
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import EquipmentForm
 
 
 def view_rented_equipment(request):
@@ -81,3 +85,18 @@ def view_rented_equipment(request):
 
 def test(request):
     return render(request, 'test.html')
+
+def equipmentlist(request):
+    equipmentlist = Equipment.objects.all()
+    
+    return render(request, 'app/equipmentlist.html', {'equipment_list': equipmentlist})
+    
+def add_equipment(request):
+    if request.method == 'POST':
+        form = EquipmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('equipment_list')
+    else:
+        form = EquipmentForm()
+    return render(request, 'app/add_equipment.html', {'form': form})

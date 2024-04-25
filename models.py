@@ -11,6 +11,12 @@ class Equipment(models.Model):
     location = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
     comments = models.CharField(max_length=100)
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    
+    def __str__(self):
+        return self.name
 
 class User(models.Model):
     firstname = models.CharField(max_length=100)

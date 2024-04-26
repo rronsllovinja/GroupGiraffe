@@ -1,0 +1,14 @@
+{% block content %}
+<div style="margin: 20px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; width: 50%; text-align: center;">
+    <form method="POST" style="margin-bottom: 20px;">
+        {% csrf_token %}
+        <p style="margin-bottom: 10px;">Are you sure you want to delete "{{ equipment.deviceName }}"?</p>
+        <input type="submit" value="Confirm" style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; cursor: pointer;">
+    </form>
+    <div>
+        <small>
+            <a href="{% url 'home' %}" style="color: #007bff; text-decoration: none;">Cancel</a>
+        </small>
+    </div>
+</div>
+{% endblock content %}

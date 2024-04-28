@@ -81,6 +81,13 @@
     .button-container a:hover {
       background-color: #ccc;
     }
+    .openbtn {
+      font-size: 30px; 
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
     #menuToggle {
       display: none;
     }
@@ -115,65 +122,96 @@
       color: #818181;
       cursor: pointer;
     }
+
+    /* Center the search bar */
+    #main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* Adjust search bar width */
+    #search {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
-<input type="checkbox" id="menuToggle">
-<div id="mySidenav" class="sidenav">
-  <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
-  <!-- <a href="searchforeqiupment">Home</a> -->
-  <a href="equipmentlist.html">Equipment List</a>
-  <a href="reservationpage.html">Reserve</a>
-  <a href="profile">Profile</a>
-  <a href="view_rented_equipment.html">Inventory Report</a>
-</div>
-<label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
-<div id="main">
-  <h1>Search for Equipment</h1>
-  <form action="">
-    <input type="search" id="esearch" name="esearch">
-    <input type="submit">
-  </form>
-  <hr>
-  
-  <h3>Top Searches</h3>
- <!-- <button type="button">Reserve</button>--->
-  <a href = "reservationpage">Reserve</a>
-  <div class="button-container">
-    <a href="{% url 'admin:index' %}">Admin</a>
-  </div>
-  <hr>
-  
-  <h3>Categories</h3>
-  <form class="" action="index.html" method="post">
-    <ul>
-      <li>Gaming</li>
-      <li>Technology</li>
-      <li>Office</li>
-      <li>Other</li>
-    </ul>
-  </form>
-  <hr>
+  <input type="checkbox" id="menuToggle">
+ <div id="mySidenav" class="sidenav">
+   <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
+        <a href="{% url 'homepage' %}">Home</a>
+        <a href="{% url 'app_createitem' %}">Reserve</a>
+        <a href="{% url 'reservationpage' %}">My Reservation</a>
+        <a href="{% url 'profile' %}">Profile</a>
+        <a href="/view_rented_equipment/">Rented Equipment</a>
+        <a href="{% url 'login' %}">Log In</a>
+        <a href="{% url 'logout' %}">Log Out</a>
+ </div>
+ <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
+ <div id="main">
+   <h1 style="text-align:center;">Search for Equipment</h1>
+   <form method="get" action="{% url 'equipmentlist' %}">
+    <input type="text" name="q" class="search-box" placeholder="Search by Device ID" value="{{ query }}">
+    <input type="hidden" name="device_id" id="device_id_input"> <!-- Hidden input field for device ID -->
+    <button type="button" class="search-btn" onclick="searchByDeviceId()">Search</button> <!-- Changed to type="button" -->
+  </form>    
+
   <div class="notification-icon">
-    <i class="fas fa-bell"></i>
-  </div>
-  <div class="profile-icon">
-    <a href="{% url 'profile' %}">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
-  </div> 
+    <a href="{% url 'notification' %}">
+        <i class="fas fa-bell"></i>
+    </a>
 </div>
-<div id="overlay"></div>
 
-<script>
-function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
-  document.getElementById("overlay").style.display = "block";
-}
-
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-  document.getElementById("overlay").style.display = "none";
-}
-</script>
-
-</body>
+   <div class="profile-icon">
+     <a href="{% url 'profile' %}">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
+   </div> 
+ </div>
+ <div id="overlay"></div>
+ 
+ <script>
+ function openNav() {
+   document.getElementById("mySidenav").style.width = "250px";
+   document.getElementById("overlay").style.display = "block";
+ }
+ 
+ function closeNav() {
+   document.getElementById("mySidenav").style.width = "0";
+   document.getElementById("overlay").style.display = "none";
+ }
+ function searchByDeviceId() {
+      var deviceId = document.querySelector('.search-box').value; // Get the value from the input field
+      document.getElementById("device_id_input").value = deviceId; // Set the value of the hidden input field
+      document.querySelector('form').submit(); // Submit the form
+    }
+  
+    function searchEquipment() {
+      var input, filter, divs, deviceId, i;
+      input = document.querySelector(".search-box"); // Corrected selector
+      filter = input.value.toUpperCase();
+      divs = document.querySelectorAll("#search-results div");
+  
+      for (i = 0; i < divs.length; i++) {
+        deviceId = divs[i].querySelector(".device-id"); // Assuming device ID is inside an element with class 'device-id'
+        if (deviceId) {
+          if (deviceId.textContent.toUpperCase().indexOf(filter) > -1) {
+            divs[i].style.display = ""; // Show the div if device ID matches the search query
+          } else {
+            divs[i].style.display = "none"; // Hide the div if device ID does not match the search query
+          }
+        }
+      }
+    }
+  
+    // Call searchEquipment() whenever the user types in the search box
+    document.querySelector(".search-box").addEventListener("keyup", searchEquipment);
+  </script>
+ </script>
+ 
+ </body>
 </html>

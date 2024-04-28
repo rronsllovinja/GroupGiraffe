@@ -1,86 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="login.css">
-</head>
-<body>
+{% block content %}
+<style>
+    /* Style for the form container */
+    .login-container {
+        width: 300px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
 
-    <header>
-        <h2 class="logo">Logo</h2>
-    </header>
+    /* Style for the form fields */
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        box-sizing: border-box;
+    }
 
-    <div class="wrapper">
-        <div class="form-box login">
-            <h2>Login</h2>
-            <form action="#">
-                <div class="input-box">
-                    <span class="icon"><ion-icon
-                    name="mail-outline"></ion-icon></span>
-                    <input type="email" required>
-                    <label>Email</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon"><ion-icon
-                    name="lock-closed-outline"></ion-icon></span>
-                    <input type="password" required>
-                    <label>Password</label>
-                </div>
-                <div class="remember-forgot">
-                    <label><input type="checkbox">
-                        Remember me</label>
-                    <a href="#">Forgot Password?</a>
-                </div>
-                <button type="submit" class="btn">Login</button>
-                <div class="login-register">
-                    <p>Don't have an account? <a 
-                        href="#"
-                        class="register-link">Sign up</a></p>
-                </div>
-            </form>
-        </div>
+    /* Style for the submit button */
+    .login-container button {
+        width: 100%;
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 0;
+        margin: 10px 0;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
 
-        <div class="form-box register">
-            <h2>Sign Up</h2>
-            <form action="#">
-                <div class="input-box">
-                    <span class="icon">
-                        <ion-icon name="person-circle-outline"></ion-icon>
-                    </span>
-                    <input type="text" required>
-                    <label>Username</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon"><ion-icon
-                    name="mail-outline"></ion-icon></span>
-                    <input type="email" required>
-                    <label>Email</label>
-                </div>
-                <div class="input-box">
-                    <span class="icon"><ion-icon
-                    name="lock-closed-outline"></ion-icon></span>
-                    <input type="password" required>
-                    <label>Password</label>
-                </div>
-                <div class="remember-forgot">
-                    <label><input type="checkbox"> I
-                    agree to the terms & conditions</label>
-                </div>
-                <button type="submit" class="btn">Register</button>
-                <div class="login-register">
-                    <p>Already have an account? <a 
-                        href="#"
-                        class="login-link">Login</a></p>
-                </div>
-            </form>
-        </div>
+    /* Style for the sign-up link */
+    .login-container small {
+        display: block;
+        text-align: center;
+    }
+</style>
+
+<div class="login-container">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Log In</legend>
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </fieldset>
+    </form>
+    <div>
+        <small>
+            Need an Account? <a href="{% url 'register' %}">Sign Up Now</a>
+        </small>
     </div>
-
-
-    <script src="login.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-</body>
-</html>
+</div>
+{% endblock content %}

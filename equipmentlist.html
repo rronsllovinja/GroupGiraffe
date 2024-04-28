@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Equipment List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <style>
+        
         .profile-icon {
             width: 50px;
             height: 50px;
@@ -52,6 +55,13 @@
         .button-container {
             margin-top: 10px;
         }
+        .openbtn {
+    font-size: 30px; /* Adjust the font size as needed */
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    }
         #menuToggle {
             display: none; 
         }
@@ -117,20 +127,82 @@
             text-decoration: none;
             cursor: pointer;
         }
+        .table-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+         }
+    .table-container table {
+        background-color: lightgrey;
+        width: 1000px;
+        padding: 20px;
+        border-radius: 20px; /* Adjust border-radius for curved corners */
+        border-collapse: separate; /* Ensure that border-radius works */
+    }
+
+    .table-container th,
+    .table-container td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+    }
+    .filter-button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px; /* Add some bottom margin for spacing */
+    }
+
+    .filter-button-container label,
+    .filter-button-container select,
+    .filter-button-container button {
+        margin: 0 10px; /* Adjust spacing between elements */
+    }
+    .button {
+    background-color: black;
+    text-decoration: none;
+    margin-right: 10px;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    text-decoration: none; /* Remove default link underline */
+    padding: 10px 20px; /* Adjust padding for better appearance */
+}
+.notification-icon {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 10px;
+      right: 70px;
+    }
+
     </style>
 </head>
 <body>
+    <!-- Sidebar Toggle -->
     <input type="checkbox" id="menuToggle">
     <div id="mySidenav" class="sidenav">
         <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
-        <a href="searchforeqiupment">Home</a>
-        <a href="reservationpage">Reserve</a>
-        <a href="profile">Profile</a>
-        <a href="view_rented_equipment.html">Rented</a>
+        <a href="{% url 'homepage' %}">Home</a>
+        <a href="{% url 'searchforequipment' %}">Search</a>
+        <a href="{% url 'app_createitem' %}">Reserve</a>
+        <a href="{% url 'reservationpage' %}">My Reservation</a>
+        <a href="{% url 'profile' %}">Profile</a>
+        <a href="/view_rented_equipment/">Rented Equipment</a>
+        <a href="{% url 'login' %}">Log In</a>
+        <a href="{% url 'logout' %}">Log Out</a>
+   
     </div>
     <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
-    <h1>Equipment List</h1>
+    <h1 style="text-align:center;">Equipment List</h1>
+    
     <!-- Filter Dropdowns -->
+    <div class="filter-button-container">
+    <input type="text" id="searchInput" onkeyup="searchEquipment()" placeholder="Search for equipment...">
+
 <label for="availability-filter">Filter by Availability:</label>
 <select id="availability-filter">
     <option value="all">All</option>
@@ -149,7 +221,10 @@
     <option value="Tripod">Tripod</option>
     <option value="Camera/Sensors">Camera/Sensors</option>
 </select>
-<button onclick="openAddModal()">Add New Equipment</button>
+<a href="{% url 'app_createitem' %}" class="button">Add Equipment</a>
+</div>
+ <!-- Table -->
+<div class="table-container">
 <table>
     <thead>
         <tr>
@@ -158,6 +233,7 @@
             <th>Device Type</th>
             <th>Quantity</th>
             <th>Availability</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody id="equipment-list">
@@ -168,41 +244,17 @@
             <td>{{ equipment.deviceType }}</td>
             <td>{{ equipment.quantity }}</td>
             <td>{{ equipment.availability }}</td>
+            <td>
+                <a href="{% url 'update_equipment' equipment.deviceid %}">Update</a>
+                &nbsp;|&nbsp;
+                <a href="{% url 'deleteitem' equipment.deviceid %}">Delete</a>
+            </td>
+            
         </tr>
         {% endfor %}
     </tbody>
 </table>
-<div id="addModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeAddModal()">&times;</span>
-        <h2>Add New Equipment</h2>
-        <form id="addForm" action="{% url 'add_equipment' %}" method="post">
-            <label for="deviceId">Device ID:</label>
-            <input type="text" id="deviceId" name="deviceId" required><br>
-            <label for="deviceName">Device Name:</label>
-            <input type="text" id="deviceName" name="deviceName" required><br>
-            <label for="deviceType">Device Type:</label>
-            <input type="text" id="deviceType" name="deviceType" required><br>
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" required><br>
-            <label for="availability">Availability:</label>
-            <select id="availability" name="availability" required>
-                <option value="available">Available</option>
-                <option value="unavailable">Unavailable</option>
-            </select><br>
-            <label for="auditDate">Audit Date:</label>
-            <input type="date" id="auditDate" name="auditDate"><br>
-            <label for="location">Location:</label>
-            <input id="location" name="location"></input><br>
-            <label for="status">Status:</label>
-            <input type="text" id="status" name="status"><br>
-            <label for="comments">Comments:</label>
-            <textarea id="comments" name="comments"></textarea><br>
-            <button type="submit">Add Equipment</button>
-        </form>
-    </div>
 </div>
-
 
 <!-- Modal -->
 <div id="myModal" class="modal">
@@ -212,10 +264,45 @@
         <p id="locationText"></p>
         <p id="statusText"></p>
         <p id="commentText"></p>
+        
     </div>
 </div>
 
+<div class="notification-icon">
+    <a href="{% url 'notification' %}">
+        <i class="fas fa-bell"></i>
+    </a>
+</div>
+
+<div class="profile-icon">
+    <a href="{% url 'profile' %}">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
+  </div> 
+
 <script>
+    function searchEquipment() {
+    // Declare variables
+    var input, filter, table, tr, tdId, tdName, tdType, i;
+    input = document.getElementById("searchInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("equipment-list");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those that don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        tdId = tr[i].getElementsByTagName("td")[0]; // Column index 0 contains the Device ID
+        tdName = tr[i].getElementsByTagName("td")[1]; // Column index 1 contains the Device Name
+        tdType = tr[i].getElementsByTagName("td")[2]; // Column index 2 contains the Device Type
+        if (tdId || tdName || tdType) {
+            if (tdId.textContent.toUpperCase().indexOf(filter) > -1 || 
+                tdName.textContent.toUpperCase().indexOf(filter) > -1 ||
+                tdType.textContent.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
       function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
             document.getElementById("overlay").style.display = "block";
@@ -267,65 +354,6 @@
 
     document.getElementById("availability-filter").addEventListener("change", filterEquipment);
     document.getElementById("type-filter").addEventListener("change", filterEquipment);
-
-    // Add New Equipment
-    function openAddModal() {
-            document.getElementById("addModal").style.display = "block";
-        }
-
-        function closeAddModal() {
-            document.getElementById("addModal").style.display = "none";
-        }
-
-        document.getElementById("addForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    // Retrieve form data
-    const deviceId = document.getElementById("deviceId").value;
-    const deviceName = document.getElementById("deviceName").value;
-    const deviceType = document.getElementById("deviceType").value;
-    const quantity = document.getElementById("quantity").value;
-    const availability = document.getElementById("availability").value;
-    const auditDate = document.getElementById("auditDate").value;
-    const status = document.getElementById("status").value;
-    const comments = document.getElementById("comments").value;
-    const location = document.getElementById("location").value;
-    // Perform validation if necessary
-    if (deviceId.trim() === "" || deviceName.trim() === "" || deviceType.trim() === "" || quantity.trim() === ""||auditDate.trim() === ""||location.trim() === "") {
-        alert("Please fill out all fields.");
-        return;
-    }
-    if (isNaN(quantity) || quantity <= 0) {
-        alert("Quantity must be a positive number.");
-        return;
-    }
-    // Add new equipment to the table
-    const newRow = document.createElement("tr");
-    newRow.className = "equipment-row";
-    newRow.innerHTML = `
-        <td>${deviceId}</td>
-        <td><a href="#" onclick="openModal('${auditDate}', '${location}', '${status}', '${comments}')">${deviceName}</a></td>
-        <td>${deviceType}</td>
-        <td>${quantity}</td>
-        <td>${availability}</td>
-    `;
-    // Append the new row to the table body
-    const equipmentList = document.getElementById("equipment-list");
-    equipmentList.appendChild(newRow);
-    document.getElementById("addForm").reset();
-    // Close the modal after adding new equipment
-    closeAddModal();
-});
-        // Edit Equipment
-        function editEquipment(deviceId) {
-            // Populate form with equipment details for editing
-        }
-
-        // Delete Equipment
-        function deleteEquipment(deviceId) {
-            // Prompt for confirmation
-            // If confirmed, remove equipment from the list
-        }
-    </script>
 </script>    
 </body>
 </html>

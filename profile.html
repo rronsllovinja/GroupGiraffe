@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        p {
+            color: #666;
+            margin-left: 20px;
+        }
+        
+        /* Style the profile information */
+        .profile-info {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Style the edit form */
+        .edit-form {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Profile</h1>
+    <div class="profile-info">
+        <p>First Name: <span id="first-name">{{ user.first_name }}</span> <button onclick="edit('first-name')">Edit</button></p>
+        <p>Last Name: <span id="last-name">{{ user.last_name }}</span> <button onclick="edit('last-name')">Edit</button></p>
+        <p>Email: <span id="email">{{ user.email }}</span> <button onclick="edit('email')">Edit</button></p>
+        <!-- Add more profile information as needed -->
+        
+        <!-- Link to notification settings -->
+        <p><a href="/notificationpage/">Notification Settings</a></p>
+        
+        <!-- Arrow back to homepage -->
+        <p><a href="{% url 'homepage' %}">&#8592; Back to Homepage</a></p>
+    </div>
+    
+    <div id="edit-form" class="edit-form">
+        <input type="text" id="edit-input">
+        <button onclick="update()">Save</button>
+        <button onclick="cancel()">Cancel</button>
+    </div>
+    
+    <script>
+        function edit(field) {
+            var fieldValue = document.getElementById(field).innerText;
+            document.getElementById('edit-input').value = fieldValue;
+            document.getElementById('edit-input').setAttribute('data-field', field);
+            document.querySelector('.profile-info').style.display = 'none';
+            document.getElementById('edit-form').style.display = 'block';
+            document.getElementById('edit-input').focus();
+        }
+
+        function update() {
+            var newValue = document.getElementById('edit-input').value;
+            var field = document.getElementById('edit-input').getAttribute('data-field');
+            document.getElementById(field).innerText = newValue;
+            document.querySelector('.profile-info').style.display = 'block';
+            document.getElementById('edit-form').style.display = 'none';
+        }
+
+        function cancel() {
+            document.querySelector('.profile-info').style.display = 'block';
+            document.getElementById('edit-form').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

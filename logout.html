@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Style for the logout container */
+    .logout-container {
+        width: 300px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        text-align: center;
+    }
+
+    /* Style for the logout link */
+    .logout-container small {
+        display: block;
+        text-align: center;
+    }
+</style>
+
+    <div class="logout-container">
+        <h2>You are now logged out</h2>
+
+        <div>
+            <small>
+                <a href="{% url 'login' %}">Log in</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}

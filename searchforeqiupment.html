@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <title>Search for Equipment</title>
+  <style>
+    .profile-icon {
+      width: 50px;
+      height: 50px;
+      background-color: #ccc;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      color: #fff;
+      text-transform: uppercase;
+      font-family: Arial, sans-serif;
+      position: fixed;
+      top: 10px;
+      right: 10px;
+    }
+    .notification-icon {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 10px;
+      right: 70px;
+    }
+    .samerow {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .samerow > div {
+      flex: 1;
+      position: relative;
+    }
+    .samerow > div:first-child {
+      margin-right: 10px;
+    }
+    .samerow > div:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: -5px;
+      border-right: 1px solid #ccc;
+    }
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+    }
+    .button {
+      flex: 1;
+      text-align: center;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f0f0f0;
+    }
+    .button img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 5px;
+    }
+    .button-container a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: transparent; 
+      cursor: pointer;
+    }
+
+    .button-container a:hover {
+      background-color: #ccc;
+    }
+    .openbtn {
+      font-size: 30px; 
+      cursor: pointer;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+    #menuToggle {
+      display: none;
+    }
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
+    .sidenav a {
+      padding: 10px 15px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+    }
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
+    .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 30px;
+      color: #818181;
+      cursor: pointer;
+    }
+
+    /* Center the search bar */
+    #main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* Adjust search bar width */
+    #search {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <input type="checkbox" id="menuToggle">
+ <div id="mySidenav" class="sidenav">
+   <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
+        <a href="{% url 'homepage' %}">Home</a>
+        <a href="{% url 'app_createinventory' %}">Reserve</a>
+        <a href="{% url 'reservationpage' %}">My Reservation</a>
+        <a href="{% url 'profile' %}">Profile</a>
+        <a href="/view_rented_equipment/">Rented Equipment</a>
+        <a href="{% url 'login' %}">Log In</a>
+        <a href="{% url 'logout' %}">Log Out</a>
+ </div>
+ <label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
+ <div id="main">
+   <h1 style="text-align:center;">Search for Equipment</h1>
+   <form method="get" action="{% url 'equipmentlist' %}">
+    <input type="text" name="q" class="search-box" placeholder="Search by Device ID" value="{{ query }}">
+    <input type="hidden" name="device_id" id="device_id_input"> <!-- Hidden input field for device ID -->
+    <button type="button" class="search-btn" onclick="searchByDeviceId()">Search</button> <!-- Changed to type="button" -->
+  </form>    
+
+  <div class="notification-icon">
+    <a href="{% url 'notification' %}">
+        <i class="fas fa-bell"></i>
+    </a>
+</div>
+
+   <div class="profile-icon">
+     <a href="{% url 'profile' %}">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
+   </div> 
+ </div>
+ <div id="overlay"></div>
+ 
+ <script>
+ function openNav() {
+   document.getElementById("mySidenav").style.width = "250px";
+   document.getElementById("overlay").style.display = "block";
+ }
+ 
+ function closeNav() {
+   document.getElementById("mySidenav").style.width = "0";
+   document.getElementById("overlay").style.display = "none";
+ }
+ function searchByDeviceId() {
+      var deviceId = document.querySelector('.search-box').value; // Get the value from the input field
+      document.getElementById("device_id_input").value = deviceId; // Set the value of the hidden input field
+      document.querySelector('form').submit(); // Submit the form
+    }
+  
+    function searchEquipment() {
+      var input, filter, divs, deviceId, i;
+      input = document.querySelector(".search-box"); // Corrected selector
+      filter = input.value.toUpperCase();
+      divs = document.querySelectorAll("#search-results div");
+  
+      for (i = 0; i < divs.length; i++) {
+        deviceId = divs[i].querySelector(".device-id"); // Assuming device ID is inside an element with class 'device-id'
+        if (deviceId) {
+          if (deviceId.textContent.toUpperCase().indexOf(filter) > -1) {
+            divs[i].style.display = ""; // Show the div if device ID matches the search query
+          } else {
+            divs[i].style.display = "none"; // Hide the div if device ID does not match the search query
+          }
+        }
+      }
+    }
+  
+    // Call searchEquipment() whenever the user types in the search box
+    document.querySelector(".search-box").addEventListener("keyup", searchEquipment);
+  </script>
+ </script>
+ 
+ </body>
+</html>

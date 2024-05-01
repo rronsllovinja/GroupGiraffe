@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% include 'navbar.html' %}
+<style>
+    h1{
+        text-align: center;
+    }
+  .bodybutton {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 100px; /* Adjust the padding to make the button bigger */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px; /* Adjust the font size to make the text bigger */
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .button:hover {
+    background-color: #45a049;
+  }
+
+</style>
+</head>
+<body>
+    
+    <H1>Home</H1>
+    <div class="bodybutton">
+    <div class="grid-container">
+    <a href="{% url 'searchforequipment' %}" class="button"><i class="fas fa-search"></i> Search</a>
+    <a href="{% url 'equipmentlist' %}" class="button"><i class="fas fa-list"></i> Equipment List</a>
+    <a href="{% url 'view_rented_equipment' %}" class="button"><i class="fas fa-file-alt"></i> Rented</a>
+    <a href="{% url 'profile' %}" class="button"><i class="fas fa-user"></i> Profile</a>
+    
+    </div>
+    
+    
+<label for="menuToggle" class="openbtn" onclick="openNav()">&#9776;</label>
+<input type="checkbox" id="menuToggle">
+ <div id="mySidenav" class="sidenav">
+   <label for="menuToggle" class="closebtn" onclick="closeNav()">&times;</label>
+   
+   <a href="{% url 'searchforequipment' %}">Search</a>
+   <a href="{% url 'equipmentlist' %}">Equipment List</a>
+   <a href="{% url 'app_createinventory' %}">Reserve</a>
+   <a href="{% url 'reservationpage' %}">My Reservation</a>
+   <a href="{% url 'view_rented_equipment' %}">Rented</a>
+   <a href="{% url 'profile' %}">Profile</a>
+   <a href="{% url 'login' %}">Log In</a>
+   <a href="{% url 'logout' %}">Log Out</a>
+   
+
+   <div class="notification-icon">
+    <a href="{% url 'notification' %}">
+        <i class="fas fa-bell"></i>
+    </a>
+</div>
+
+<div class="profile-icon">
+    <a href="{% url 'profile' %}">{{ user.first_name.0|upper }}{{ user.last_name.0|upper }}</a>
+</div> 
+</div>
+<div id="overlay"></div>
+
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("overlay").style.display = "block";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("overlay").style.display = "none";
+}
+</script>
+
+</body>
+</html>

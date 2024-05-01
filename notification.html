@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    #notification-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .notification {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 5px;
+      background-color: #f9f9f9;
+    }
+    #no-notification {
+      display: none;
+      text-align: center;
+    }
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: green;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Notifications</h1>
+    <ul id="notification-list">
+      <!-- Notifications will be dynamically added here -->
+    </ul>
+    <p id="no-notification">No notifications</p>
+    <div class="button-container">
+      <button onclick="readAll()">Read All</button>
+      <button onclick="clearAll()">Clear All</button>
+    </div>
+  </div>
+
+  <script>
+    // Sample notifications
+    const notifications = [
+      "Mac Mini (Intel) is overdue ",
+      "Notification 2",
+      "Notification 3"
+    ];
+
+    const notificationList = document.getElementById('notification-list');
+    const noNotificationMsg = document.getElementById('no-notification');
+
+    // Function to display notifications
+    function displayNotifications() {
+      notificationList.innerHTML = '';
+      if (notifications.length === 0) {
+        noNotificationMsg.style.display = 'block';
+      } else {
+        noNotificationMsg.style.display = 'none';
+        notifications.forEach(notification => {
+          const li = document.createElement('li');
+          li.innerText = notification;
+          li.classList.add('notification');
+          notificationList.appendChild(li);
+        });
+      }
+    }
+
+    // Function to mark all notifications as read
+    function readAll() {
+      // Here you can implement logic to mark notifications as read
+      console.log("All notifications marked as read.");
+      displayNotifications();
+    }
+
+    // Function to clear all notifications
+    function clearAll() {
+      // Here you can implement logic to clear notifications
+      notifications.length = 0;
+      console.log("All notifications cleared.");
+      displayNotifications();
+    }
+
+    // Initial display of notifications
+    displayNotifications();
+  </script>
+</body>
+</html>
